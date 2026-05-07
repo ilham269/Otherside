@@ -72,7 +72,7 @@
                     <a href="#" class="btn-dark">
                         <i class="fa-solid fa-cart-plus"></i> Add to cart
                     </a>
-                    <a href="#" class="btn-outline-dark">
+                    <a href="{{ route('checkout', $featured) }}" class="btn-outline-dark">
                         <i class="fa-solid fa-bolt"></i> Buy now
                     </a>
                 </div>
@@ -121,7 +121,7 @@
                             <a href="#" class="btn-dark" style="flex:1;justify-content:center;">
                                 <i class="fa-solid fa-cart-plus"></i> Add to cart
                             </a>
-                            <a href="#" class="btn-outline-dark" style="flex:1;justify-content:center;">
+                            <a href="{{ route('checkout', $product) }}" class="btn-outline-dark" style="flex:1;justify-content:center;">
                                 <i class="fa-solid fa-bolt"></i> Buy now
                             </a>
                         </div>

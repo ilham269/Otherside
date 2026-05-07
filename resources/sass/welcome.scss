@@ -58,7 +58,7 @@ body {
             font-size: .83rem; font-weight: 600;
             letter-spacing: .2px;
             transition: color .2s;
-            &:hover { color: #fff; }
+            &:hover, &.active { color: #fff; }
         }
     }
 

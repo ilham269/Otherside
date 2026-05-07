@@ -5,11 +5,38 @@ use Illuminate\Support\Facades\Route;
 // ─── User Routes ─────────────────────────────────────────────────────────────
 Route::get('/', [App\Http\Controllers\WelcomeController::class, 'index'])->name('home');
 
+// Store public pages
+Route::get('/products', [App\Http\Controllers\ProductCatalogController::class, 'index'])->name('products.index');
+Route::get('/products/{product:slug}', [App\Http\Controllers\ProductCatalogController::class, 'show'])->name('products.show');
+Route::get('/blog', [App\Http\Controllers\BlogController::class, 'index'])->name('blog.index');
+Route::get('/blog/{post:slug}', [App\Http\Controllers\BlogController::class, 'show'])->name('blog.show');
+Route::get('/about', fn() => view('store.about'))->name('about');
+
+// Custom order (auth required)
+Route::middleware('auth')->group(function () {
+    Route::get('/custom-order', [App\Http\Controllers\CustomOrderFormController::class, 'index'])->name('custom-order.index');
+    Route::post('/custom-order', [App\Http\Controllers\CustomOrderFormController::class, 'store'])->name('custom-order.store');
+});
+
 Auth::routes();
 
 Route::middleware('auth')->group(function () {
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 });
+
+// ─── Payment Routes ───────────────────────────────────────────────────────────
+Route::middleware('auth')->group(function () {
+    Route::get('/checkout/{product}', [App\Http\Controllers\PaymentController::class, 'checkout'])->name('checkout');
+    Route::post('/checkout/{product}/order', [App\Http\Controllers\PaymentController::class, 'createOrder'])->name('payment.create');
+    Route::get('/payment/finish', [App\Http\Controllers\PaymentController::class, 'finish'])->name('payment.finish');
+
+    // Order tracking
+    Route::get('/my-orders', [App\Http\Controllers\OrderTrackingController::class, 'index'])->name('orders.index');
+    Route::get('/my-orders/{order}', [App\Http\Controllers\OrderTrackingController::class, 'show'])->name('orders.show');
+});
+
+// Webhook — tidak perlu auth, tapi perlu CSRF exempt
+Route::post('/payment/notification', [App\Http\Controllers\PaymentController::class, 'notification'])->name('payment.notification');
 
 // ─── Admin Routes ─────────────────────────────────────────────────────────────
 Route::prefix('admin')->name('admin.')->group(function () {

@@ -26,6 +26,28 @@
                         <div style="font-size:.83rem;color:#64748b;">Qty: {{ $order->qty }}</div>
                         <div style="font-size:.83rem;font-weight:700;color:#6366f1;">Rp {{ number_format($order->total_price,0,',','.') }}</div>
                     </div>
+
+                    @if($order->shipping_address)
+                    <div class="col-12 pt-2 border-top" style="border-color:#f1f5f9!important;">
+                        <div style="font-size:.75rem;color:#94a3b8;font-weight:700;text-transform:uppercase;letter-spacing:.8px;margin-bottom:.4rem;">Alamat Pengiriman</div>
+                        <div style="font-size:.85rem;font-weight:600;">{{ $order->shipping_address }}</div>
+                        <div style="font-size:.83rem;color:#64748b;">
+                            {{ $order->shipping_city }}, {{ $order->shipping_province }} {{ $order->shipping_postal_code }}
+                        </div>
+                        @if($order->shipping_notes)
+                        <div style="font-size:.78rem;color:#94a3b8;margin-top:.25rem;font-style:italic;">
+                            Catatan: {{ $order->shipping_notes }}
+                        </div>
+                        @endif
+                    </div>
+                    @endif
+
+                    @if($order->payment_type)
+                    <div class="col-sm-6">
+                        <div style="font-size:.75rem;color:#94a3b8;font-weight:700;text-transform:uppercase;letter-spacing:.8px;">Metode Bayar</div>
+                        <div style="font-weight:600;margin-top:.25rem;text-transform:capitalize;">{{ str_replace('_', ' ', $order->payment_type) }}</div>
+                    </div>
+                    @endif
                 </div>
 
                 @if($order->payment_proof)

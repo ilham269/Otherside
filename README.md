@@ -78,14 +78,6 @@ php artisan serve
 
 Akses di `http://localhost:8000`
 
-## Akun Default
-
-| Role  | Email                    | Password |
-|-------|--------------------------|----------|
-| Admin | admin@otherside.com      | password |
-| Admin | editor@otherside.com     | password |
-| User  | budi@gmail.com           | password |
-
 Admin panel: `http://localhost:8000/admin/login`
 
 ## Struktur Folder Utama

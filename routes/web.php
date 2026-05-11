@@ -8,6 +8,7 @@ Route::get('/', [App\Http\Controllers\WelcomeController::class, 'index'])->name(
 // Store public pages
 Route::get('/products', [App\Http\Controllers\ProductCatalogController::class, 'index'])->name('products.index');
 Route::get('/products/{product:slug}', [App\Http\Controllers\ProductCatalogController::class, 'show'])->name('products.show');
+Route::post('/products/{product:slug}/review', [App\Http\Controllers\ProductCatalogController::class, 'storeReview'])->name('products.review')->middleware('auth');
 Route::get('/blog', [App\Http\Controllers\BlogController::class, 'index'])->name('blog.index');
 Route::get('/blog/{post:slug}', [App\Http\Controllers\BlogController::class, 'show'])->name('blog.show');
 Route::get('/about', fn() => view('store.about'))->name('about');

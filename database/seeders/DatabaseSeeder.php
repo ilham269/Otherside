@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
             CustomOrderSeeder::class,
             PostSeeder::class,
             MessageSeeder::class,
+            ReviewSeeder::class,
         ]);
     }
 }

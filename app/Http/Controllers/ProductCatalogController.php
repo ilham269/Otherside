@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ReviewRequest;
 use App\Models\Category;
 use App\Models\Product;
+use App\Services\ReviewService;
 
 class ProductCatalogController extends Controller
 {
+    public function __construct(private ReviewService $reviewService) {}
+
     public function index(\Illuminate\Http\Request $request)
     {
         $categories = Category::whereNull('parent_id')->where('is_active', true)->withCount('products')->get();
@@ -32,12 +36,39 @@ class ProductCatalogController extends Controller
         abort_if(!$product->is_available, 404);
         $product->load(['images', 'category']);
 
+        $reviews         = $this->reviewService->getForProduct($product);
+        $ratingBreakdown = $this->reviewService->getRatingBreakdown($product);
+        $canReviewData   = $this->reviewService->canReview($product);
+        $avgRating       = $product->average_rating;
+        $reviewsCount    = $product->reviews_count;
+
         $related = Product::with('primaryImage')
             ->where('category_id', $product->category_id)
             ->where('id', '!=', $product->id)
             ->where('is_available', true)
             ->take(4)->get();
 
-        return view('store.product-detail', compact('product', 'related'));
+        return view('store.product-detail', compact(
+            'product', 'related', 'reviews',
+            'ratingBreakdown', 'canReviewData', 'avgRating', 'reviewsCount'
+        ));
+    }
+
+    public function storeReview(ReviewRequest $request, Product $product)
+    {
+        $canReviewData = $this->reviewService->canReview($product);
+
+        if (!$canReviewData['can']) {
+            return back()->with('review_error', 'Kamu tidak bisa memberikan ulasan untuk produk ini.');
+        }
+
+        $this->reviewService->store(
+            $product,
+            $canReviewData['order'],
+            $request->validated('rating'),
+            $request->validated('body')
+        );
+
+        return back()->with('review_success', 'Ulasan berhasil dikirim. Terima kasih!');
     }
 }

@@ -104,7 +104,7 @@
         <div class="row g-3">
             @foreach($bestSellers as $product)
             <div class="col-6 col-md-4">
-                <div class="product-card">
+                <div class="product-card" onclick="window.location='{{ route('products.show', $product) }}'">
                     @if($product->primaryImage)
                         <img src="{{ Storage::url($product->primaryImage->image_path) }}"
                             alt="{{ $product->name }}" class="product-img">
@@ -117,11 +117,8 @@
                         <div class="product-category">{{ $product->category->name ?? '' }}</div>
                         <div class="product-name" title="{{ $product->name }}">{{ $product->name }}</div>
                         <div class="product-price">Rp {{ number_format($product->price, 0, ',', '.') }}</div>
-                        <div class="product-actions">
-                            <a href="#" class="btn-dark" style="flex:1;justify-content:center;">
-                                <i class="fa-solid fa-cart-plus"></i> Add to cart
-                            </a>
-                            <a href="{{ route('checkout', $product) }}" class="btn-outline-dark" style="flex:1;justify-content:center;">
+                        <div class="product-actions" onclick="event.stopPropagation();">
+                            <a href="{{ route('checkout', $product) }}" class="btn-dark" style="flex:1;justify-content:center;">
                                 <i class="fa-solid fa-bolt"></i> Buy now
                             </a>
                         </div>
@@ -140,7 +137,7 @@
         <div class="row g-3">
             @foreach($newArrivals as $product)
             <div class="col-6 col-md-3">
-                <div class="product-card">
+                <div class="product-card" onclick="window.location='{{ route('products.show', $product) }}'">
                     @if($product->primaryImage)
                         <img src="{{ Storage::url($product->primaryImage->image_path) }}"
                             alt="{{ $product->name }}" class="product-img">
@@ -153,11 +150,8 @@
                         <div class="product-category">{{ $product->category->name ?? '' }}</div>
                         <div class="product-name" title="{{ $product->name }}">{{ $product->name }}</div>
                         <div class="product-price">Rp {{ number_format($product->price, 0, ',', '.') }}</div>
-                        <div class="product-actions">
-                            <a href="#" class="btn-dark" style="flex:1;justify-content:center;">
-                                <i class="fa-solid fa-cart-plus"></i> Add
-                            </a>
-                            <a href="#" class="btn-outline-dark" style="flex:1;justify-content:center;">
+                        <div class="product-actions" onclick="event.stopPropagation();">
+                            <a href="{{ route('checkout', $product) }}" class="btn-dark" style="flex:1;justify-content:center;">
                                 <i class="fa-solid fa-bolt"></i> Buy
                             </a>
                         </div>
